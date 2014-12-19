@@ -1,11 +1,32 @@
 
 /**
- * @file A Data structure library for javascript.
- * @copyright Camilo Chacón Sartori 2014.
- * @version 0.1-alpha
- * @title Panther.JS
- */
+	* @file A Data structure library for javascript.
+	* @copyright Camilo Chacon Sartori 2014.
+	* @version 0.2-alpha
+	* @title Panther.JS
 
+	The MIT License (MIT)
+
+	Copyright (c) 2014 Camilo Chacon Sartori
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+ */
 
 
 
@@ -15,7 +36,7 @@ window.utils = (function(){
 
 	var utils = {
 
-		
+
 		isUndefined: function(object){
 			return typeof object === "undefined";
 		},
@@ -27,9 +48,9 @@ window.utils = (function(){
 			this.dataList.sort(function(a, b){
 				return a - b;
 			});
-			var found = false, 
-				first = 0, 
-				last = this.dataList.length - 1, 
+			var found = false,
+				first = 0,
+				last = this.dataList.length - 1,
 				pos = 0;
 			while(first <= last && !found){
 				pos = parseInt((first + last) / 2);
@@ -43,7 +64,7 @@ window.utils = (function(){
 				}
 			}
 			return found;
-		
+
 		}
 
 	};
@@ -59,14 +80,14 @@ window.utils = (function(){
 var PJS = (function(){
 
 
-	/** 
+	/**
 	* @class List
 	 **/
 	var List = function(){
 
-		var dataList = [], 
+		var dataList = [],
 			pointer = -1,
-			sizeList = 0,
+			size = 0,
 			values = arguments;
 
 		this.add = add;
@@ -93,7 +114,7 @@ var PJS = (function(){
 
 
 		/**
-		 * Initialization 
+		 * Initialization
 		 * @function init
          * @memberof List#
 		 * @param {Array} Initialization elements.
@@ -112,25 +133,25 @@ var PJS = (function(){
 		/**
 		 * Add element to a list.
 		 * @memberof List#
-		 * @param {Object} element Add a new element to the list. 
+		 * @param {Object} element Add a new element to the list.
 		 * @return {Object} Current object list.
 		 */
 
 		function add(element){
 			dataList[++pointer] = element;
-			++sizeList;
+			++size;
 			return this;
 		}
 		/**
 		 * Return a element from a index.
 		 * @memberof List#
-		 * @param {int} index Index to search. 
+		 * @param {int} index Index to search.
 		 * @return {Object} Return the element.
 		 */
 
 		function get(index){
 			if(index > pointer || index < 0){
-				throw new Error("DT.List: Set, index undefined.");
+				throw new Error("PJS.List: Set, index undefined.");
 			}
 			return dataList[index];
 		}
@@ -154,8 +175,7 @@ var PJS = (function(){
 				return false;
 			}
 			var i = 0;
-			for( ; i < sizeList; ++i){
-				//console.debug(obj);
+			for( ; i < size; ++i){
 				callback(dataList[i]);
 			}
 			return this;
@@ -168,11 +188,11 @@ var PJS = (function(){
 		function toArray(){
 			var array = [],
 				i = 0;
-			for( ; i < sizeList; ++i){
+			for( ; i < size; ++i){
 				array[i] = get(i);
 			}
 			return array;
-		}	
+		}
 		/**
 		 * Set a element in a specific index.
 		 * @memberof List#
@@ -183,7 +203,7 @@ var PJS = (function(){
 		function set(index, element){
 
 			if(index > pointer || index < 0){
-				throw new Error("DT.List: Set, index undefined.");
+				throw new Error("PJS.List: Set, index undefined.");
 			}
 			dataList[index] = element;
 			return this;
@@ -194,8 +214,8 @@ var PJS = (function(){
 		 * @return {Object} First Element.
 		 */
 		function front(){
-			if(sizeList === 0){
-				throw new Error("DT.List: Front, list whiout elements.");
+			if(size === 0){
+				throw new Error("PJS.List: Front, list whiout elements.");
 			}
 			return dataList[0];
 		}
@@ -205,8 +225,8 @@ var PJS = (function(){
 		 * @return {Object} Last Element.
 		 */
 		function back() {
-			if(sizeList === 0){
-				throw new Error("DT.List: Back, list whiout elements.");
+			if(size === 0){
+				throw new Error("PJS.List: Back, list whiout elements.");
 			}
 			return dataList[pointer];
 		}
@@ -216,9 +236,9 @@ var PJS = (function(){
 		 * @return {Object} Current object list.
 		 */
 		function clear(){
-			
+
 			dataList = [];
-			sizeList = 0;
+			size = 0;
 			pointer = -1;
 			return this;
 		}
@@ -230,7 +250,7 @@ var PJS = (function(){
 		 * @return {Object} Current object list.
 		 */
 		function remove(element){
-			
+
 			var result = false;
 			if(utils.isUndefined(element)){
 				return result;
@@ -238,12 +258,12 @@ var PJS = (function(){
 			var index = indexOf(element);
 			if(index > 0){
 				var i = index;
-				while(i < sizeList){
+				while(i < size){
 					dataList[i] = dataList[i+1];
 					++i;
 				}
 				--pointer;
-				--sizeList;
+				--size;
 				result = true;
 			}
 			return result;
@@ -260,24 +280,24 @@ var PJS = (function(){
 				return false;
 			}
 			if(index > pointer || index < 0){
-				throw new Error("DT.List: Insert, index undefined.");
+				throw new Error("PJS.List: Insert, index undefined.");
 			}
-			
+
 			var i = 0;
-			for( ; i < sizeList; ++i){
+			for( ; i < size; ++i){
 				if(i === index){
 					var temp = [];
 					var j = 0;
 
-					while(i < sizeList){
+					while(i < size){
 						temp[j++] = dataList[i];
 						++i;
 					}
 					dataList[index] = element;
 					pointer = index;
-					sizeList = index + 1;
-					var size = temp.length;
-					for(j = 0; j < size; ++j){
+					size = index + 1;
+					var _size = temp.length;
+					for(j = 0; j < _size; ++j){
 						add(temp[j]);
 					}
 				}
@@ -297,14 +317,14 @@ var PJS = (function(){
 			var size = elements.length,
 				 i = 0;
 			if(size === 0){
-				throw new Error("DT.List: addRange, parameter with size 0.");
+				throw new Error("PJS.List: addRange, parameter with size 0.");
 			}
-			
+
 			for( ; i < size; ++i){
 				if(!utils.isUndefined(elements[i])){
 					add(elements[i]);
 				}
-				
+
 			}
 			return this;
 
@@ -317,16 +337,16 @@ var PJS = (function(){
 		 * @return {Object} Current object list.
 		 */
 		function removeRange(start, end) {
-			
+
 			if(utils.isUndefined(start) || utils.isUndefined(end)){
 				return false;
 			}
-			if(start >= sizeList || start < 0){
-				throw new Error("DT.List: removeRange, index undefined.");
+			if(start >= size|| start < 0){
+				throw new Error("PJS.List: removeRange, index undefined.");
 			}
-			var index = 0, 
+			var index = 0,
 				i = 0;
-			for( ; i < sizeList; ++i){
+			for( ; i < size; ++i){
 				if(i >= start){
 					while(index != end){
 						remove(dataList[i]);
@@ -346,9 +366,9 @@ var PJS = (function(){
 			if(utils.isUndefined(element)){
 				return false;
 			}
-			var result = -1, 
+			var result = -1,
 				i = 0;
-			for( ; i < sizeList; ++i){
+			for( ; i < size; ++i){
 				if(dataList[i] === element){
 					result =  i;
 					break;
@@ -366,12 +386,12 @@ var PJS = (function(){
 			if(utils.isUndefined(element)){
 				return false;
 			}
-			var result = -1, 
+			var result = -1,
 				i = 0;
-			for( ; i < sizeList; ++i){
+			for( ; i < size; ++i){
 
-				if(dataList[sizeList - 1 - i] === element){
-					result = sizeList - 1 - i;
+				if(dataList[size - 1 - i] === element){
+					result = size - 1 - i;
 					break;
 				}
 			}
@@ -398,8 +418,8 @@ var PJS = (function(){
 		function reverse(){
 			dataReverse = [];
 			var i = 0;
-			for( ; i < sizeList; ++i){
-				dataReverse[i] = dataList[sizeList-1-i];
+			for( ; i < size; ++i){
+				dataReverse[i] = dataList[size - 1 - i];
 
 			}
 			return dataReverse;
@@ -417,7 +437,6 @@ var PJS = (function(){
 			}
 			var newList = new PJS.List();
 			if(indexFrom > indexTo || indexFrom < 0 || indexTo > pointer){
-				console.debug("DT.List: subList, index undefined. indexFrom: " + indexFrom + ", indexTo: " + indexTo);
 				return false;
 				//throw new Error("DT.List: subList, index undefined. indexFrom: " + indexFrom + ", indexTo: " + indexTo);
 			}
@@ -434,7 +453,7 @@ var PJS = (function(){
 		 * @return {int} Return number elements.
 		 */
 		function size(){
-			return sizeList;
+			return size;
 		}
 		/**
 		 * Check if the list is empty.
@@ -442,7 +461,7 @@ var PJS = (function(){
 		 * @return {Bool} Return Return boolean.
 		 */
 		function empty() {
-			return sizeList === 0;
+			return size === 0;
 		}
 		/**
 		 * Return the sort list.
@@ -453,17 +472,17 @@ var PJS = (function(){
 			return dataList.sort();
 		}
 
-		
+
 
 	};
 
-	
+
 	/** @class Set **/
 	var Set = function(){
-	
-		var dataList = {}, 
+
+		var dataList = [],
 			pointer = -1,
-			sizeList = 0;
+			size = 0;
 
 
 		this.add = add;
@@ -479,7 +498,7 @@ var PJS = (function(){
 		this.clone = clone;
 		this.subSet = subSet;
 		this.union = union;
-		this.getData = getData;
+		this.toArray = toArray;
 		this.intersect = intersect;
 
 		/**
@@ -489,14 +508,15 @@ var PJS = (function(){
 		 * @return {Object} Return Current object set.
 		 */
 		function add(element) {
-
+			console.log("y", dataList);
 			if(utils.isUndefined(element)){
 				return false;
 			}
-			if(!(element in dataList)){
-				
+			if(!(element in dataList) ){
+
 				dataList[element] = { value: element};
-				++sizeList;	
+				++size;
+				++pointer;
 			}
 			return this;
 		}
@@ -506,7 +526,7 @@ var PJS = (function(){
 		 * @param {Object} element Element to the set.
 		 * @return {Object} Return Return current object set.
 		 */
-		function getData(){
+		function toArray(){
 			return dataList;
 		}
 		/**
@@ -527,16 +547,15 @@ var PJS = (function(){
 				return false;
 			}
 			if(objSet instanceof Set){
-				console.debug(this.getData());
-				var i = 0,
-					size = objSet.size();
-				for( ;  i < size; ++i){
-					
-					if(!this.contains(objSet.get(i))){
-						return false;
-					}
-				}
 
+				for(index in this.getData()){
+					if(index != "pjsID"){
+						if(!objSet.contains(this.getData()[index].value)){
+							return false;
+						}
+					}
+
+				}
 				return true;
 			}
 			return false;
@@ -549,15 +568,16 @@ var PJS = (function(){
 		function intersect(objSet){
 			if(utils.isUndefined(objSet)){
 				return false;
-			} 
-			var newSet = new Set();
+			}
+			var newSet = new PJS.Set();
 			if(objSet instanceof Set){
-				var i = 0,
-					size = objSet.size();
-				for( ; i < size; ++i){
 
-					if(this.contains(objSet.get(i))){
-						newSet.add(objSet.get(i));
+				for(index in objSet.getData()){
+					if(index != "pjsID"){
+						if(this.contains(objSet.getData()[index].value)){
+
+							newSet.add(objSet.getData()[index].value);
+						}
 					}
 				}
 			}
@@ -565,16 +585,35 @@ var PJS = (function(){
 		}
 		/**
 		 * @memberof Set#
-		 * @param {Object} element 
+		 * @param {Object} element
 		 * @return {Bool}
 		 */
 		function contains(element){
 			return (element in dataList);
 		}
-	
+		/**
+		 * Search index if exist element in the list.
+		 * @memberof List#
+		 * @param {Object} element Element to find.
+		 * @return {bool} Return index position if find the element, otherwise return false.
+		 */
+		function indexOf(element){
+			if(utils.isUndefined(element)){
+				return false;
+			}
+			var result = -1,
+				i = 0;
+			for( ; i < size; ++i){
+				if(dataList[i] === element){
+					result =  i;
+					break;
+				}
+			}
+			return result;
+		}
 		/**
 		 * @memberof Set#
-		 * @param {Object} element 
+		 * @param {Object} element
 		 * @return {Bool}
 		 */
 		function remove(element){
@@ -585,18 +624,18 @@ var PJS = (function(){
 				index = indexOf(element);
 			if(index > 0){
 				var i = index;
-				while(i < sizeList){
+				while(i < size){
 					dataList[i] = dataList[i+1];
 					++i;
 				}
 				--pointer;
-				--sizeList;
+				--size;
 			}
 			return this;
 		}
 		/**
 		 * @memberof Set#
-		 * @param {Object} objSet 
+		 * @param {Object} objSet
 		 * @return {Object}
 		 */
 		function union(objSet){
@@ -607,19 +646,21 @@ var PJS = (function(){
 			if(objSet instanceof Set){
 				var index = 0;
 				for(index in objSet.getData()){
-					if(!newSet.contains(objSet.getData()[index].value)){
+					if(index != "pjsID"){
+						if(!newSet.contains(objSet.getData()[index].value)){
 
-						newSet.add(objSet.getData()[index].value);
+							newSet.add(objSet.getData()[index].value);
 
+						}
 					}
 				}
 			}
-			
+
 			return newSet;
 		}
 		/**
 		 * @memberof Set#
-		 * @param {Object} objSet 
+		 * @param {Object} objSet
 		 * @return {Bool}
 		 */
 		function equals(objSet){
@@ -628,8 +669,8 @@ var PJS = (function(){
 			}
 			var result = true;
 			if(objSet instanceof Set){
-				
-				if(objSet.size() != sizeList){
+
+				if(objSet.size() != size){
 					result = false;
 				}
 				if(result){
@@ -645,48 +686,47 @@ var PJS = (function(){
 				}
 
 			}else{
-				throw new Error("DT.Set: parameter is not a Set Object.");
+				throw new Error("PJS.Set: parameter is not a Set Object.");
 			}
 			return result;
 		}
 		/**
 		 * @memberof Set#
-		 * @param {Object} index 
+		 * @param {Object} index
 		 * @return {Object}
 		 */
 		function get(index){
 			if(utils.isUndefined(index)){
 				return false;
 			}
-			if(index > pointer || index < 0){
-				throw new Error("DT.List: Set, index undefined.");
+			if(index > this.pointer || index < 0){
+
+				throw new Error("PJS.Set: Set, index undefined.");
 			}
 			return dataList[index].value;
 		}
 		/**
-		 * @memberof Set# 
+		 * @memberof Set#
 		 * @return {int}
 		 */
 		function size(){
-			return sizeList;
+			return size;
 		}
 		/**
 		 * @memberof Set#
 		 */
 		function clear(){
 			dataList = [];
-			sizeList = 0;
+			size = 0;
 			pointer = -1;
-			console.debug("DROP");
 		}
 		/**
 		 * @memberof Set#
 		 * @return {Bool}
 		 */
 		function empty(){
-			return (sizeList === 0);
+			return (size === 0);
 		}
-
 
 
 	}
@@ -711,7 +751,7 @@ var PJS = (function(){
 
 		/**
 		 * @memberof Stack#
-		 * @param {Object} element 
+		 * @param {Object} element
 		 * @return {Object}
 		 */
 
@@ -720,6 +760,7 @@ var PJS = (function(){
 				return false;
 			}
 			dataList[pointer++] = element;
+
 			return this;
 		}
 		/**
@@ -730,10 +771,10 @@ var PJS = (function(){
 			if(empty()){
 				throw new Error("Error underflow");
 			}
-			return dataList[pointer--];
+			return dataList[--pointer];
 		}
 		/**
-		 * @memberof Stack# 
+		 * @memberof Stack#
 		 * @return {Object}
 		 */
 		function peek(){
@@ -744,7 +785,7 @@ var PJS = (function(){
 		}
 		/**
 		 * @memberof Stack#
-		 * @param {int} index 
+		 * @param {int} index
 		 * @return {Object}
 		 */
 		function get(index){
@@ -758,7 +799,7 @@ var PJS = (function(){
 
 		}
 		/**
-		 * @memberof Stack# 
+		 * @memberof Stack#
 		 */
 		function clear(){
 			dataList = [];
@@ -799,7 +840,7 @@ var PJS = (function(){
 		}
 		/**
 		 * @memberof Stack#
-		 * @param {Object} element 
+		 * @param {Object} element
 		 * @return {Bool}
 		 */
 
@@ -815,15 +856,15 @@ var PJS = (function(){
 			}
 			return false;
 		}
-		
-		
+
+
 
 	}
 	/** @class Queue **/
 	var Queue = function(){
 
 
-		var dataList = [], 
+		var dataList = [],
 			pointerUpper = 0,
 			pointerLower = 0;
 		this.enqueue = enqueue;
@@ -840,7 +881,7 @@ var PJS = (function(){
 
 		/**
 		 * @memberof Queue#
-		 * @param {Object} element 
+		 * @param {Object} element
 		 * @return {Object}
 		 */
 
@@ -882,7 +923,7 @@ var PJS = (function(){
 			pointerUpper = 0;
 		}
 		/**
-		 * @memberof Queue# 
+		 * @memberof Queue#
 		 * @return {Bool}
 		 */
 		function empty(){
@@ -890,7 +931,7 @@ var PJS = (function(){
 		}
 		/**
 		 * @memberof Queue#
-		 * @param {Callback} callback 
+		 * @param {Callback} callback
 		 * @return {Object}
 		 */
 		function forEach(callback){
@@ -900,7 +941,6 @@ var PJS = (function(){
 			var i = pointerLower,
 				size = pointerUpper;
 			for( ; i < size; ++i){
-				//console.debug(obj);
 				callback(dataList[i]);
 			}
 			return this;
@@ -914,14 +954,14 @@ var PJS = (function(){
 		}
 		/**
 		 * @memberof Queue#
-		 * @param {int} index 
+		 * @param {int} index
 		 * @return {Object}
 		 */
 		function get(index){
 			if(utils.isUndefined(index)){
 				return false;
 			}
-			if(sizeList < 0 || pointer >= sizeList){
+			if(pointerLower < 0 || pointer >= pointerUpper){
 				throw new Error("Overflow index.");
 			}
 			return dataList[index];
@@ -948,7 +988,7 @@ var PJS = (function(){
 		}
 		/**
 		 * @memberof Queue#
-		 * @param {Object} element 
+		 * @param {Object} element
 		 * @return {Bool}
 		 */
 		function contains(element){
@@ -967,26 +1007,28 @@ var PJS = (function(){
 	/** @class Hash **/
 	var Hash = function(){
 
-		var _size = 0, 
-			listKey = new PJS.List(),
-			array = [];
+		var size = 0,
+			listHashCode = new PJS.Set(),
+			array = [],
+			hashcode = 0;
 		this.hashCode = hashCode;
 		this.add = add;
 		this.size = size;
 		this.get = get;
-		this.getData =getData;
+		this.clear = clear;
+		this.empty = empty;
+		this.remove = remove;
+		this.forEach = forEach;
 		//this.BIG_NUMBER_PRIME = 1000000016531;
 		this.BIG_NUMBER_PRIME = 1610612741;
-		
+
 
 		/**
 		 * @memberof Hash#
 		 * @return {Array}
 		 */
 
-		function getData(){
-			return array;
-		}
+
 
 		function hashCode(object){
 
@@ -994,21 +1036,15 @@ var PJS = (function(){
 				if(typeof object == "object"){
 					object = object.pjsID();
 				}
+
 				var i = 0, len = object.length,
-					 hashCode = 0;
+					 _hashCode = 0;
 				for( ; i < len; i++){
-					//console.log("code:" +object[i].charCodeAt(0));
-					//hashCode = hashCode * 33 + object[i].charCodeAt(0) ;
-					//console.log(hashCode);
-
-					hashCode = (hashCode << 5) | (hashCode >> 27);
-					hashCode += object[i].charCodeAt(0);
-					
-					//hashCode += object[i].charCodeAt(0) * ((Math.random() * 11) + 2);
-
+					_hashCode = (_hashCode << 5) | (_hashCode >> 27);
+					_hashCode += object[i].charCodeAt(0);
 				}
-			//	console.log(hashCode);
-				return hashCode;
+
+				return _hashCode;
 			}else if(utils.isUndefined(object)){
 				return null;
 			}
@@ -1016,9 +1052,9 @@ var PJS = (function(){
 
 		}
 		function addLink(obj, key, _value){
-			
+
 			if(obj.next === null){
-				++_size;
+				++size;
 				obj.next = {
 					key: key,
 					value: _value,
@@ -1030,14 +1066,16 @@ var PJS = (function(){
 		}
 		/**
 		 * @memberof Hash#
-		 * @param {Object} key 
-		 * @param {Object} value 
+		 * @param {Object} key
+		 * @param {Object} value
 		 * @return {Object}
 		 */
 
 		function add(key, _value){
-			
-			var hashcode = hashCode(key) % this.BIG_NUMBER_PRIME;
+
+			hashcode = hashCode(key) % this.BIG_NUMBER_PRIME;
+
+
 			if(array[hashcode] == undefined){
 				array[hashcode] = 	{
 										key : key,
@@ -1045,13 +1083,14 @@ var PJS = (function(){
 										value: _value,
 										next: null
 									}
-				++_size;
+				++size;
 
 			}else{
 
 				addLink(array[hashcode], key, _value);
-				
+
 			}
+			listHashCode.add(hashcode);
 			return this;
 		}
 		/**
@@ -1059,33 +1098,86 @@ var PJS = (function(){
 		 * @return {int}
 		 */
 		function size(){
-			return _size;
+			return size;
 		}
-
-		function search(pointer, key){
-			//console.debug("Comparación:", pointer.key, key, pointer.key == key, pointer.value);
+		/**
+		* @memberof Hash#
+		* @return {bool}
+		*/
+		function empty(){
+			return size === 0;
+		}
+		/**
+		* @memberof Hash#
+		* @return {void}
+		*/
+		function clear(){
+			array = [];
+			listHashCode.clear();
+			size = 0;
+		}
+		/**
+		* @memberof Hash#
+		* @param {Object} pointer
+		* @param {Object} key
+		* @param {bool} isRemove
+		* @return {Object}
+		*/
+		function search(pointer, key, isRemove){
 			if(pointer.key == key){
-				return pointer.value;
+
+					if(isRemove){
+						var _key = hashCode(key);
+						array[_key] = undefined;
+						listHashCode.remove(_key);
+						return true;
+					}
+					return pointer.value;
+
 			}
-			return search(pointer.next, key);
+			return search(pointer.next, key, isRemove);
 
 		}
 		/**
 		 * @memberof Hash#
-		 * @param {Object} key 
+		 * @param {Object} key
 		 * @return {Object}
 		 */
 		function get(key){
-			//console.debug(array);
-			
+
 			var k = hashCode(key) % this.BIG_NUMBER_PRIME;
 			if(utils.isUndefined(array[k])) return null;
-			return search(array[k], key); 
+			return search(array[k], key, false);
+		}
+		/**
+		* @memberof Hash#
+		* @param {Object} key
+		* @return {Object}
+		*/
+		function remove(key){
+
+			var k = hashCode(key) % this.BIG_NUMBER_PRIME;
+			if(utils.isUndefined(array[k])) return null;
+			return search(array[k], key, true);
 		}
 
+		/**
+		* @memberof Hash#
+		* @param {callback} key
+		* @return {Object}
+		*/
+		function forEach(callback){
+			if(utils.isUndefined(callback)){
+				return false;
+			}
+			var i = 0, _array = listHashCode.toArray();
+			for(obj in _array){
+				if(obj != "pjsID")	callback(array[obj]);
+			}
+			return this;
+		}
 
-	};	
-
+	};
 	return {
 		List : List,
 		Set : Set,
@@ -1095,33 +1187,15 @@ var PJS = (function(){
 	};
 })();
 
+(function() {
+	if ( typeof Object.prototype.pjsID == "undefined") {
+		var id = 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		Object.prototype.pjsID = function() {
+			if ( typeof this.__uniqueid == "undefined" ) {
+				this.__uniqueid = ++id;
+			}
+			return "pjs_" + this.__uniqueid;
+		};
+	}
+})();

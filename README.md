@@ -1,4 +1,2 @@
-Panther.JS v0.1alpha
+PantherJS
 =========
-
-A Javascript data structure library.
