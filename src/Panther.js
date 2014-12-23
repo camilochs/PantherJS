@@ -1007,7 +1007,7 @@ var PJS = (function(){
 	/** @class Hash **/
 	var Hash = function(){
 
-		var size = 0,
+		var _size = 0,
 			array = [],
 			hashcode = 0;
 		this.hashCode = hashCode;
@@ -1052,7 +1052,7 @@ var PJS = (function(){
 		function addLink(obj, key, _value){
 
 			if(obj.next === null){
-				++size;
+				++_size;
 				obj.next = {
 					key: key,
 					value: _value,
@@ -1081,7 +1081,7 @@ var PJS = (function(){
 										value: _value,
 										next: null
 									}
-				++size;
+				++_size;
 
 			}else{
 
@@ -1095,14 +1095,14 @@ var PJS = (function(){
 		 * @return {int}
 		 */
 		function size(){
-			return size;
+			return _size;
 		}
 		/**
 		* @memberof Hash#
 		* @return {bool}
 		*/
 		function empty(){
-			return size === 0;
+			return _size === 0;
 		}
 		/**
 		* @memberof Hash#
@@ -1110,7 +1110,7 @@ var PJS = (function(){
 		*/
 		function clear(){
 			array = [];
-			size = 0;
+			_size = 0;
 		}
 		/**
 		* @memberof Hash#
