@@ -1050,7 +1050,10 @@ var PJS = (function(){
 
 		}
 		function addLink(obj, key, _value){
-
+			if(obj.key === key) {
+				obj.value = _value;
+				return
+			}
 			if(obj.next === null){
 				++_size;
 				obj.next = {
