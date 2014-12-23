@@ -1125,6 +1125,7 @@ var PJS = (function(){
 					if(isRemove){
 						var _key = hashCode(key);
 						array[_key] = undefined;
+						--_size;
 						return true;
 					}
 					return pointer.value;
