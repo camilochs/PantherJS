@@ -508,7 +508,6 @@ var PJS = (function(){
 		 * @return {Object} Return Current object set.
 		 */
 		function add(element) {
-			console.log("y", dataList);
 			if(utils.isUndefined(element)){
 				return false;
 			}
@@ -1123,16 +1122,16 @@ var PJS = (function(){
 		* @return {Object}
 		*/
 		function search(pointer, key, isRemove){
-			if(pointer.key == key){
+			if(pointer === null) return;
+			if(pointer.key === key){
 
-					if(isRemove){
-						var _key = hashCode(key);
-						array[_key] = undefined;
-						--_size;
-						return true;
-					}
-					return pointer.value;
-
+				if(isRemove){
+					var _key = hashCode(key);
+					array[_key] = undefined;
+					--_size;
+					return true;
+				}
+				return pointer.value;
 			}
 			return search(pointer.next, key, isRemove);
 
