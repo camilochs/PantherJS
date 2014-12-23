@@ -1008,7 +1008,6 @@ var PJS = (function(){
 	var Hash = function(){
 
 		var size = 0,
-			listHashCode = new PJS.Set(),
 			array = [],
 			hashcode = 0;
 		this.hashCode = hashCode;
@@ -1018,7 +1017,6 @@ var PJS = (function(){
 		this.clear = clear;
 		this.empty = empty;
 		this.remove = remove;
-		this.forEach = forEach;
 		//this.BIG_NUMBER_PRIME = 1000000016531;
 		this.BIG_NUMBER_PRIME = 1610612741;
 
@@ -1090,7 +1088,6 @@ var PJS = (function(){
 				addLink(array[hashcode], key, _value);
 
 			}
-			listHashCode.add(hashcode);
 			return this;
 		}
 		/**
@@ -1113,7 +1110,6 @@ var PJS = (function(){
 		*/
 		function clear(){
 			array = [];
-			listHashCode.clear();
 			size = 0;
 		}
 		/**
@@ -1129,7 +1125,6 @@ var PJS = (function(){
 					if(isRemove){
 						var _key = hashCode(key);
 						array[_key] = undefined;
-						listHashCode.remove(_key);
 						return true;
 					}
 					return pointer.value;
@@ -1166,16 +1161,7 @@ var PJS = (function(){
 		* @param {callback} key
 		* @return {Object}
 		*/
-		function forEach(callback){
-			if(utils.isUndefined(callback)){
-				return false;
-			}
-			var i = 0, _array = listHashCode.toArray();
-			for(obj in _array){
-				if(obj != "pjsID")	callback(array[obj]);
-			}
-			return this;
-		}
+		
 
 	};
 	return {
