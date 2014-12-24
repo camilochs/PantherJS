@@ -1036,9 +1036,10 @@ var PJS = (function(){
 
 				var i = 0, len = object.length,
 					 _hashCode = 0;
-				for( ; i < len; i++){
-					_hashCode = (_hashCode << 5) | (_hashCode >> 27);
-					_hashCode += object[i].charCodeAt(0);
+				for( ; i < len; ++i){
+					_hashCode = object[i].charCodeAt(0) + (_hashCode << 6) + (_hashCode << 16) - _hashCode;
+					//_hashCode = (_hashCode << 5) | (_hashCode >> 27);
+					//_hashCode += object[i].charCodeAt(0);
 				}
 
 				return _hashCode;
@@ -1181,6 +1182,7 @@ var PJS = (function(){
 		var id = 0;
 
 		Object.prototype.pjsID = function() {
+
 			if ( typeof this.__uniqueid == "undefined" ) {
 				this.__uniqueid = ++id;
 			}
