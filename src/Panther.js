@@ -863,9 +863,11 @@ var PJS = (function(){
 	var Queue = function(){
 
 
-		var dataList = [],
-			pointerUpper = 0,
-			pointerLower = 0;
+		var dataList   = new Array(32),
+			_size  = 32,
+			current   = 0,
+			left  = 0,
+			right = 0;
 		this.enqueue = enqueue;
 		this.dequeue = dequeue;
 		this.peek = peek;
@@ -874,7 +876,6 @@ var PJS = (function(){
 		this.size = size;
 		this.forEach = forEach;
 		this.clone = clone;
-		this.get = get;
 		this.contains = contains;
 		this.toArray = toArray;
 
@@ -888,7 +889,17 @@ var PJS = (function(){
 			if(utils.isUndefined(element)){
 				return false;
 			}
-			dataList[pointerUpper++] = element;
+			if(current >= _size)
+			{
+			//	console.log(dataList);
+				dataList = dataList.concat(dataList);
+				_size = _size * 2;
+			//	console.log(dataList);
+			}
+
+			dataList[right % _size] = element;
+			right++;
+			current++;
 			return this;
 		}
 		/**
@@ -896,37 +907,32 @@ var PJS = (function(){
 		 * @return {Object}
 		 */
 		function dequeue(){
-			if(pointerLower > pointerUpper || pointerLower < 0){
+			if(current <= 0){
 				return false;
 			}
-
-			return dataList[pointerLower++];
+			current--;
+			return dataList[left++ % _size];
 		}
 		/**
 		 * @memberof Queue#
 		 * @return {Object}
 		 */
 		function peek(){
-			if(pointerLower > pointerUpper || pointerLower < 0){
-				return false;
-			}
-
-			return dataList[pointerLower];
+			return dataList[left % _size];
 		}
 		/**
 		 * @memberof Queue#
 		 */
 		function clear(){
-			dataList = [];
-			pointerLower = 0;
-			pointerUpper = 0;
+			dataList = new Array(32);
+			current = left = right = 0;
 		}
 		/**
 		 * @memberof Queue#
 		 * @return {Bool}
 		 */
 		function empty(){
-			return (pointerLower === pointerUpper);
+			return (current === 0);
 		}
 		/**
 		 * @memberof Queue#
@@ -937,10 +943,10 @@ var PJS = (function(){
 			if(utils.isUndefined(callback)){
 				return false;
 			}
-			var i = pointerLower,
-				size = pointerUpper;
-			for( ; i < size; ++i){
-				callback(dataList[i]);
+			var i, e;
+			for(i = left,e = right; i < e; ++i)
+			{
+				callback(dataList[i % _size]);
 			}
 			return this;
 		}
@@ -949,23 +955,9 @@ var PJS = (function(){
 		 * @return {int}
 		 */
 		function size(){
-			return (pointerUpper - pointerLower);
+			return current;
 		}
-		/**
-		 * @memberof Queue#
-		 * @param {int} index
-		 * @return {Object}
-		 */
-		function get(index){
-			if(utils.isUndefined(index)){
-				return false;
-			}
-			if(pointerLower < 0 || pointer >= pointerUpper){
-				throw new Error("Overflow index.");
-			}
-			return dataList[index];
-
-		}
+		
 		/**
 		 * @memberof Queue#
 		 * @return {Object}
@@ -979,9 +971,10 @@ var PJS = (function(){
 		 */
 		function toArray(){
 			var newArray = [],
-				i = pointerLower;
-			for( ; i < pointerUpper; ++i){
-				newArray[i] = get(i);
+				i, l, r;
+			for(i = 0, l = left, r = right; l < r; ++l, ++i)
+			{
+				newArray[i] = dataList[i % _size];
 			}
 			return newArray;
 		}
@@ -994,11 +987,10 @@ var PJS = (function(){
 			if(utils.isUndefined(element)){
 				return false;
 			}
-			var i = pointerLower;
-			for( ; i < pointerUpper; ++i){
-				if(dataList[i] === element){
-					return true;
-				}
+			var i, e;
+			for(i = left,e = right; i < e; ++i)
+			{
+				if(dataList[i % _size] === element) return true;
 			}
 			return false;
 		}
@@ -1008,7 +1000,7 @@ var PJS = (function(){
 
 		var _size = 0,
 			array = [],
-			hashcode = 0;
+			_hashcode = 0;
 		this.hashCode = hashCode;
 		this.add = add;
 		this.size = size;
@@ -1029,13 +1021,12 @@ var PJS = (function(){
 
 		function hashCode(object){
 
-			if(typeof object === "string" || typeof object == "object"){
-				if(typeof object == "object"){
-					object = object.pjsID();
-				}
-
-				var i = 0, len = object.length,
-					 _hashCode = 0;
+			if(typeof object === "object")	object = object.pjsID();
+			if(typeof object === "string"){
+			
+				var i = 0;
+				len = object.length;
+				_hashCode = 0;
 				for( ; i < len; ++i){
 					_hashCode = object[i].charCodeAt(0) + (_hashCode << 6) + (_hashCode << 16) - _hashCode;
 					//_hashCode = (_hashCode << 5) | (_hashCode >> 27);
@@ -1185,6 +1176,7 @@ var PJS = (function(){
 
 			if ( typeof this.__uniqueid == "undefined" ) {
 				this.__uniqueid = ++id;
+				console.log("test");
 			}
 			return "pjs_" + this.__uniqueid;
 		};
