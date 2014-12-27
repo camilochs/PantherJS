@@ -891,10 +891,8 @@ var PJS = (function(){
 			}
 			if(current >= _size)
 			{
-			//	console.log(dataList);
 				dataList = dataList.concat(dataList);
 				_size = _size * 2;
-			//	console.log(dataList);
 			}
 
 			dataList[right % _size] = element;
@@ -1176,7 +1174,6 @@ var PJS = (function(){
 
 			if ( typeof this.__uniqueid == "undefined" ) {
 				this.__uniqueid = ++id;
-				console.log("test");
 			}
 			return "pjs_" + this.__uniqueid;
 		};
